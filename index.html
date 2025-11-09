@@ -124,10 +124,19 @@
     /* [제거됨] .cards, .card, .kpi ... */
 
     /* Sections */
-    section { padding: 28px 0 40px; }
-    section h2 { font-size: 24px; margin: 0 0 12px; letter-spacing: -0.3px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
-
+    section {
+      padding: 28px 0 40px;
+      /* 추가: 섹션의 직계 자식 요소(h2, .explorer 등) 사이에 일관된 간격을 줌 */
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    section h2 {
+      font-size: 24px;
+      margin: 0; /* 'gap'으로 간격을 제어하므로 h2의 하단 마진은 제거 */
+      letter-spacing: -0.3px;
+    }
+    
     /* Structure stepper */
     .stepper { display: grid; grid-template-columns: 1.2fr 2fr; gap: 14px; }
     .steps { display: flex; flex-direction: column; gap: 10px; }
