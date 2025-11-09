@@ -10,23 +10,27 @@
        Design System
        ===================== */
     :root {
-      --bg: #0b0c10;
-      --bg-elev: #11131a;
-      --text: #e8eef6;
-      --muted: #a7b0c0;
-      --brand: #5eead4; /* teal-300 */
-      --brand-2: #60a5fa; /* blue-400 */
-      --accent: #f472b6; /* pink-400 */
-      --danger: #f43f5e; /* rose-500 */
-      --warn: #f59e0b; /* amber-500 */
-      --ok: #34d399; /* emerald-400 */
-      --card: rgba(255,255,255,0.04);
-      --border: rgba(255,255,255,0.08);
+      /* "근섬유" 테마: 딥 인디고 배경 + 퍼플(지구력)/레드(파워) 포인트 */
+      --bg: #100f1c;
+      --bg-elev: #1a192a;
+      --text: #eef0f6;
+      --muted: #9da6c0;
+      
+      --brand: #c084fc; /* Purple-400 (지구력 / 주조색) */
+      --brand-2: #60a5fa; /* Blue-400 (지구력 2 / 보조색) */
+      --accent: #f43f5e; /* Rose-500 (파워 / 강조색) */
+      
+      --danger: var(--accent); /* 파워/위험 색상 통일 */
+      --warn: #f59e0b; /* Amber-500 */
+      --ok: #34d399; /* Emerald-400 */
+      
+      --card: rgba(230, 230, 255, 0.05);
+      --border: rgba(230, 230, 255, 0.1);
       --shadow: 0 8px 30px rgba(0,0,0,0.35);
       --radius: 18px;
       --radius-lg: 26px;
       --maxw: 1100px;
-      --grid-color: rgba(255,255,255,0.06);
+      --grid-color: rgba(230, 230, 255, 0.07);
     }
 
     @media (prefers-color-scheme: light) {
@@ -43,13 +47,13 @@
     }
 
     [data-theme="dark"] {
-      --bg: #0b0c10;
-      --bg-elev: #11131a;
-      --text: #e8eef6;
-      --muted: #a7b0c0;
-      --card: rgba(255,255,255,0.04);
-      --border: rgba(255,255,255,0.08);
-      --grid-color: rgba(255,255,255,0.06);
+      --bg: #100f1c;
+      --bg-elev: #1a192a;
+      --text: #eef0f6;
+      --muted: #9da6c0;
+      --card: rgba(230, 230, 255, 0.05);
+      --border: rgba(230, 230, 255, 0.1);
+      --grid-color: rgba(230, 230, 255, 0.07);
     }
 
     * { box-sizing: border-box; }
@@ -57,8 +61,9 @@
     body {
       margin: 0;
       color: var(--text);
-      background: radial-gradient(1200px 800px at 20% -10%, rgba(96,165,250,0.12), transparent 60%),
-                  radial-gradient(1200px 800px at 100% 10%, rgba(94,234,212,0.12), transparent 60%),
+      /* 배경 그라데이션을 새 테마색(퍼플/블루)으로 변경 */
+      background: radial-gradient(1200px 800px at 20% -10%, rgba(192, 132, 252, 0.12), transparent 60%),
+                  radial-gradient(1200px 800px at 100% 10%, rgba(96, 165, 250, 0.12), transparent 60%),
                   linear-gradient(var(--bg), var(--bg));
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       letter-spacing: -0.2px;
@@ -104,6 +109,7 @@
     }
     .btn:hover { transform: translateY(-1px); }
 
+    /* 진행률 표시줄: 새 테마 그라데이션 적용 */
     .progress { height: 3px; background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--accent)); width: 0%; }
 
     /* Hero */
@@ -111,13 +117,11 @@
     .title { font-size: clamp(28px, 4.2vw, 56px); line-height: 1.04; margin: 4px 0; font-weight: 900; }
     .subtitle { font-size: clamp(15px, 2.1vw, 18px); color: var(--muted); max-width: 70ch; }
     .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    /* 주 버튼: 새 테마 그라데이션(퍼플->블루) 적용 */
     .btn-primary { background: linear-gradient(90deg, var(--brand), var(--brand-2)); color: #061017; border: none; font-weight: 800; }
     .btn-ghost { background: var(--card); }
 
-    .cards { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
-    .card { grid-column: span 12; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
-    .card h3 { margin: 0 0 8px; font-size: 18px; }
-    .kpi { font-size: 22px; font-weight: 800; }
+    /* [제거됨] .cards, .card, .kpi ... */
 
     /* Sections */
     section { padding: 28px 0 40px; }
@@ -128,7 +132,8 @@
     .stepper { display: grid; grid-template-columns: 1.2fr 2fr; gap: 14px; }
     .steps { display: flex; flex-direction: column; gap: 10px; }
     .step { padding: 10px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); cursor: pointer; }
-    .step.active { outline: 2px solid color-mix(in oklab, var(--brand), white 10%); background: linear-gradient(180deg, rgba(94,234,212,0.12), rgba(96,165,250,0.08)); }
+    /* 활성 스텝: 새 테마색(퍼플/블루)으로 변경 */
+    .step.active { outline: 2px solid color-mix(in oklab, var(--brand), white 10%); background: linear-gradient(180deg, rgba(192, 132, 252, 0.12), rgba(96, 165, 250, 0.08)); }
     .step small { color: var(--muted); }
     .panel { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; background: var(--bg-elev); }
 
@@ -144,10 +149,13 @@
     .explorer { display: grid; grid-template-columns: 1fr; gap: 12px; border: 1px solid var(--border); background: var(--bg-elev); border-radius: var(--radius-lg); padding: 16px; }
     .bars { display: grid; gap: 10px; }
     .bar { height: 14px; border-radius: 8px; background: var(--card); overflow: hidden; border: 1px solid var(--border); }
+    /* 지근(slow) 바: 지구력 색상 (퍼플->블루) */
     .bar .fill { height: 100%; width: 50%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); }
+    /* 속근(fast) 바: 파워 색상 (레드->앰버) */
     .bar.fast .fill { background: linear-gradient(90deg, var(--accent), var(--warn)); }
     .range { appearance: none; width: 100%; height: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; }
-    .range::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: radial-gradient(circle at 30% 30%, white 20%, #d1efe9 21%, #7ce7d3 60%, #4ad6bd 61%); border-radius: 50%; border: 2px solid #033; box-shadow: 0 2px 8px rgba(0,0,0,0.35); cursor: grab; }
+    /* 슬라이더 손잡이: 주조색(퍼플) 테마로 변경 */
+    .range::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: radial-gradient(circle at 30% 30%, white 20%, #e9d5ff 21%, #c084fc 60%, #a855f7 61%); border-radius: 50%; border: 2px solid #3b0764; box-shadow: 0 2px 8px rgba(0,0,0,0.35); cursor: grab; }
 
     /* Energy timeline */
     .timeline { display: grid; grid-template-columns: 2fr 3fr; gap: 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elev); padding: 12px; }
@@ -182,14 +190,14 @@
     /* Responsive */
     @media (min-width: 720px) {
       nav ul { display: flex; }
-      .cards .card { grid-column: span 4; }
+      /* .cards .card { grid-column: span 4; } <- 삭제됨 */
       .grid-2 { grid-template-columns: 1.2fr 1fr; }
       .type { grid-column: span 4; }
       .glossary .term { grid-column: span 4; }
     }
 
     @media (min-width: 1024px) {
-      .cards .card { grid-column: span 4; }
+      /* .cards .card { grid-column: span 4; } <- 삭제됨 */
     }
 
     /* Motion reduced */
@@ -235,24 +243,7 @@
         <a class="btn btn-ghost" href="#glossary">용어 검색</a>
       </div>
 
-      <div class="cards" role="list">
-        <div class="card" role="listitem">
-          <h3>정확한 대비</h3>
-          <div class="kpi">다크/라이트 자동, 수동 전환</div>
-          <p class="muted">검은 배경에 검은 글씨로 보이는 문제를 구조적으로 예방.</p>
-        </div>
-        <div class="card" role="listitem">
-          <h3>모바일 최적화</h3>
-          <div class="kpi">한 손 조작 UX</div>
-          <p class="muted">큰 터치 영역, 스크롤스파이, 읽기 진행 표시.</p>
-        </div>
-        <div class="card" role="listitem">
-          <h3>학습 흐름</h3>
-          <div class="kpi">개념 → 탐색 → 비교 → 퀴즈</div>
-          <p class="muted">지식 전이를 고려한 짧은 러닝 루프.</p>
-        </div>
-      </div>
-    </section>
+      </section>
 
     <section id="structure" aria-labelledby="t-structure">
       <h2 id="t-structure">근육의 구조</h2>
@@ -275,18 +266,12 @@
           </div>
           <div id="panel-3" hidden>
             <svg class="sarcomere" viewBox="0 0 600 140" aria-label="사코메어 모식도">
-              <!-- Z-lines -->
               <rect x="40" y="20" width="6" height="100" fill="#7dd3fc" rx="2"></rect>
               <rect x="554" y="20" width="6" height="100" fill="#7dd3fc" rx="2"></rect>
-              <!-- M-line -->
               <rect x="298" y="30" width="4" height="80" fill="#fca5a5" rx="2"></rect>
-              <!-- Myosin (thick) -->
               <rect x="180" y="48" width="240" height="44" fill="#f59e0b" rx="10"></rect>
-              <!-- Actin (thin) left -->
               <rect x="46" y="62" width="134" height="16" fill="#60a5fa" rx="8"></rect>
-              <!-- Actin right -->
               <rect x="420" y="62" width="134" height="16" fill="#60a5fa" rx="8"></rect>
-              <!-- Labels -->
               <text x="46" y="18" fill="currentColor" font-size="12">Z</text>
               <text x="556" y="18" fill="currentColor" font-size="12">Z</text>
               <text x="300" y="26" fill="currentColor" font-size="12" text-anchor="middle">M</text>
@@ -323,10 +308,10 @@
         <label for="slowPct">지근(Type I) 비율: <strong id="slowLabel">50%</strong></label>
         <input id="slowPct" class="range" type="range" min="0" max="100" value="50" step="1" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-label="지근 비율" />
         <div class="bars">
-          <div class="bar slow" aria-label="지근 비율">
+          <div class="bar slow" aria-label="지근 비율 (지구력)">
             <div id="barSlow" class="fill" style="width:50%"></div>
           </div>
-          <div class="bar fast" aria-label="속근 비율">
+          <div class="bar fast" aria-label="속근 비율 (파워)">
             <div id="barFast" class="fill" style="width:50%"></div>
           </div>
         </div>
