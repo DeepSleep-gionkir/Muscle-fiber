@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>근섬유 아틀라스 | Muscle Fiber Atlas</title>
+  <meta name="description" content="근섬유(근육 섬유)의 구조, 유형, 에너지 시스템, 훈련 적응을 한눈에 배우는 인터랙티브 단일 페이지." />
+  <style>
+    /* =====================
+       Design System
+       ===================== */
+    :root {
+      --bg: #0b0c10;
+      --bg-elev: #11131a;
+      --text: #e8eef6;
+      --muted: #a7b0c0;
+      --brand: #5eead4; /* teal-300 */
+      --brand-2: #60a5fa; /* blue-400 */
+      --accent: #f472b6; /* pink-400 */
+      --danger: #f43f5e; /* rose-500 */
+      --warn: #f59e0b; /* amber-500 */
+      --ok: #34d399; /* emerald-400 */
+      --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 8px 30px rgba(0,0,0,0.35);
+      --radius: 18px;
+      --radius-lg: 26px;
+      --maxw: 1100px;
+      --grid-color: rgba(255,255,255,0.06);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7fafc;
+        --bg-elev: #ffffff;
+        --text: #0b1220;
+        --muted: #536079;
+        --card: rgba(0,0,0,0.04);
+        --border: rgba(0,0,0,0.08);
+        --grid-color: rgba(0,0,0,0.06);
+        --shadow: 0 10px 30px rgba(0,0,0,0.12);
+      }
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b0c10;
+      --bg-elev: #11131a;
+      --text: #e8eef6;
+      --muted: #a7b0c0;
+      --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --grid-color: rgba(255,255,255,0.06);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 20% -10%, rgba(96,165,250,0.12), transparent 60%),
+                  radial-gradient(1200px 800px at 100% 10%, rgba(94,234,212,0.12), transparent 60%),
+                  linear-gradient(var(--bg), var(--bg));
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      letter-spacing: -0.2px;
+    }
+
+    /* subtle grid */
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: -1;
+      background-image: radial-gradient(circle at 1px 1px, var(--grid-color) 1px, transparent 1px);
+      background-size: 26px 26px;
+      mask-image: radial-gradient(60% 60% at 50% 15%, black 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 18px; }
+
+    /* Header & Nav */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(140%) blur(8px);
+      background: color-mix(in oklab, var(--bg-elev) 78%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      display: flex; align-items: center; gap: 14px; padding: 10px 0;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -0.6px;
+      font-size: 18px;
+    }
+    .logo-badge { width: 28px; height: 28px; border-radius: 10px; display: grid; place-items: center; background:
+      conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--accent)); box-shadow: var(--shadow);
+      color: #081018; font-weight: 900; }
+    nav ul { list-style: none; display: none; gap: 14px; padding: 0; margin: 0; }
+    nav a { text-decoration: none; color: var(--text); opacity: 0.84; padding: 8px 10px; border-radius: 10px; }
+    nav a.active, nav a:hover { background: var(--card); opacity: 1; }
+
+    .spacer { flex: 1; }
+    .btn {
+      border: 1px solid var(--border); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      color: var(--text); padding: 8px 12px; border-radius: 12px; cursor: pointer; transition: transform .12s ease, background .2s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+
+    .progress { height: 3px; background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--accent)); width: 0%; }
+
+    /* Hero */
+    .hero { padding: 28px 0 32px; display: grid; gap: 18px; }
+    .title { font-size: clamp(28px, 4.2vw, 56px); line-height: 1.04; margin: 4px 0; font-weight: 900; }
+    .subtitle { font-size: clamp(15px, 2.1vw, 18px); color: var(--muted); max-width: 70ch; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-primary { background: linear-gradient(90deg, var(--brand), var(--brand-2)); color: #061017; border: none; font-weight: 800; }
+    .btn-ghost { background: var(--card); }
+
+    .cards { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .card { grid-column: span 12; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+    .card h3 { margin: 0 0 8px; font-size: 18px; }
+    .kpi { font-size: 22px; font-weight: 800; }
+
+    /* Sections */
+    section { padding: 28px 0 40px; }
+    section h2 { font-size: 24px; margin: 0 0 12px; letter-spacing: -0.3px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+
+    /* Structure stepper */
+    .stepper { display: grid; grid-template-columns: 1.2fr 2fr; gap: 14px; }
+    .steps { display: flex; flex-direction: column; gap: 10px; }
+    .step { padding: 10px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); cursor: pointer; }
+    .step.active { outline: 2px solid color-mix(in oklab, var(--brand), white 10%); background: linear-gradient(180deg, rgba(94,234,212,0.12), rgba(96,165,250,0.08)); }
+    .step small { color: var(--muted); }
+    .panel { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; background: var(--bg-elev); }
+
+    /* SVG Sarcomere */
+    .sarcomere { width: 100%; background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border-radius: 14px; border: 1px dashed var(--border); padding: 8px; }
+
+    /* Type cards */
+    .type-cards { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .type { grid-column: span 12; padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-elev); position: relative; }
+    .chip { display: inline-block; padding: 4px 8px; font-size: 12px; border: 1px solid var(--border); border-radius: 999px; margin-right: 6px; opacity: .86; }
+
+    /* Explorer */
+    .explorer { display: grid; grid-template-columns: 1fr; gap: 12px; border: 1px solid var(--border); background: var(--bg-elev); border-radius: var(--radius-lg); padding: 16px; }
+    .bars { display: grid; gap: 10px; }
+    .bar { height: 14px; border-radius: 8px; background: var(--card); overflow: hidden; border: 1px solid var(--border); }
+    .bar .fill { height: 100%; width: 50%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); }
+    .bar.fast .fill { background: linear-gradient(90deg, var(--accent), var(--warn)); }
+    .range { appearance: none; width: 100%; height: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; }
+    .range::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: radial-gradient(circle at 30% 30%, white 20%, #d1efe9 21%, #7ce7d3 60%, #4ad6bd 61%); border-radius: 50%; border: 2px solid #033; box-shadow: 0 2px 8px rgba(0,0,0,0.35); cursor: grab; }
+
+    /* Energy timeline */
+    .timeline { display: grid; grid-template-columns: 2fr 3fr; gap: 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elev); padding: 12px; }
+    .pill { padding: 8px 10px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; display: inline-flex; gap: 8px; align-items: center; }
+
+    /* Comparison */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .table { overflow: auto; border: 1px solid var(--border); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px; border-bottom: 1px solid var(--border); text-align: left; }
+    th { background: var(--card); position: sticky; top: 0; }
+
+    /* Glossary */
+    .search { display: flex; gap: 10px; }
+    .input { flex: 1; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-elev); color: var(--text); }
+    .glossary { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+    .term { grid-column: span 6; border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: var(--bg-elev); }
+
+    /* Quiz */
+    .quiz { display: grid; gap: 10px; border: 1px solid var(--border); border-radius: 16px; padding: 14px; background: var(--bg-elev); }
+    .opt { padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); cursor: pointer; }
+    .opt.correct { outline: 2px solid var(--ok); }
+    .opt.wrong { outline: 2px solid var(--danger); }
+
+    /* Footer */
+    footer { padding: 30px 0 50px; color: var(--muted); font-size: 13px; }
+
+    /* Back-to-top */
+    .to-top { position: fixed; right: 16px; bottom: 16px; z-index: 40; opacity: 0; transform: translateY(8px); transition: .2s ease; }
+    .to-top.show { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (min-width: 720px) {
+      nav ul { display: flex; }
+      .cards .card { grid-column: span 4; }
+      .grid-2 { grid-template-columns: 1.2fr 1fr; }
+      .type { grid-column: span 4; }
+      .glossary .term { grid-column: span 4; }
+    }
+
+    @media (min-width: 1024px) {
+      .cards .card { grid-column: span 4; }
+    }
+
+    /* Motion reduced */
+    @media (prefers-reduced-motion: reduce) {
+      .btn:hover { transform: none; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav" aria-label="주요 탐색">
+      <div class="logo" aria-label="근섬유 아틀라스 홈">
+        <div class="logo-badge" aria-hidden="true">μ</div>
+        근섬유 아틀라스
+      </div>
+      <nav aria-label="섹션 메뉴">
+        <ul>
+          <li><a href="#intro">소개</a></li>
+          <li><a href="#structure">구조</a></li>
+          <li><a href="#types">유형</a></li>
+          <li><a href="#energy">에너지</a></li>
+          <li><a href="#training">훈련</a></li>
+          <li><a href="#compare">비교</a></li>
+          <li><a href="#glossary">사전</a></li>
+          <li><a href="#quiz">퀴즈</a></li>
+          <li><a href="#refs">참고</a></li>
+        </ul>
+      </nav>
+      <div class="spacer"></div>
+      <button class="btn" id="themeToggle" aria-pressed="false" aria-label="테마 전환">☀️/🌙</button>
+    </div>
+    <div class="progress" id="progress" role="progressbar" aria-label="읽기 진행률"></div>
+  </header>
+
+  <main class="wrap">
+    <section id="intro" class="hero" aria-labelledby="t-intro">
+      <h1 id="t-intro" class="title">근섬유를 가장 아름답고 쉽게 이해하는 방법</h1>
+      <p class="subtitle">근육의 최소 단위부터 에너지 시스템, 훈련에 따른 적응까지—근섬유의 모든 것을 한 페이지에서 탐색할 수 있도록 설계한 인터랙티브 아틀라스.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#types">유형 탐색</a>
+        <a class="btn btn-ghost" href="#compare">빠른 비교</a>
+        <a class="btn btn-ghost" href="#glossary">용어 검색</a>
+      </div>
+
+      <div class="cards" role="list">
+        <div class="card" role="listitem">
+          <h3>정확한 대비</h3>
+          <div class="kpi">다크/라이트 자동, 수동 전환</div>
+          <p class="muted">검은 배경에 검은 글씨로 보이는 문제를 구조적으로 예방.</p>
+        </div>
+        <div class="card" role="listitem">
+          <h3>모바일 최적화</h3>
+          <div class="kpi">한 손 조작 UX</div>
+          <p class="muted">큰 터치 영역, 스크롤스파이, 읽기 진행 표시.</p>
+        </div>
+        <div class="card" role="listitem">
+          <h3>학습 흐름</h3>
+          <div class="kpi">개념 → 탐색 → 비교 → 퀴즈</div>
+          <p class="muted">지식 전이를 고려한 짧은 러닝 루프.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="structure" aria-labelledby="t-structure">
+      <h2 id="t-structure">근육의 구조</h2>
+      <div class="stepper">
+        <div class="steps" role="tablist" aria-label="구조 단계">
+          <button class="step active" role="tab" data-step="0" aria-selected="true"><strong>근육 → 근섬유다발</strong><br><small>결합조직(에피미지움·퍼이미지움)</small></button>
+          <button class="step" role="tab" data-step="1"><strong>근섬유</strong><br><small>세포막(사르코레마), T-세관</small></button>
+          <button class="step" role="tab" data-step="2"><strong>마이오피브릴</strong><br><small>다수의 사코메어 직렬 배열</small></button>
+          <button class="step" role="tab" data-step="3"><strong>사코메어</strong><br><small>Z선–Z선, 액틴·미오신</small></button>
+        </div>
+        <div class="panel" role="tabpanel">
+          <div id="panel-0">
+            <p>골격근은 여러 <strong>근섬유다발(퍼시클)</strong>의 묶음으로 구성되며, 각 다발은 결합조직이 둘러싸 지지한다. 신경과 혈관이 다발 사이로 분포한다.</p>
+          </div>
+          <div id="panel-1" hidden>
+            <p><strong>근섬유</strong>는 다핵 세포로, 세포막인 <em>사르코레마</em>와 전기 신호를 내부로 전달하는 <em>T-세관</em>을 가진다. 세포질(사르코플라즘)에는 미토콘드리아와 글리코겐이 풍부하다.</p>
+          </div>
+          <div id="panel-2" hidden>
+            <p><strong>마이오피브릴</strong>은 수천 개의 단백질 다발로, 수축 단위인 사코메어가 직렬로 연결되어 있다. 횡문 무늬는 이 배열의 결과다.</p>
+          </div>
+          <div id="panel-3" hidden>
+            <svg class="sarcomere" viewBox="0 0 600 140" aria-label="사코메어 모식도">
+              <!-- Z-lines -->
+              <rect x="40" y="20" width="6" height="100" fill="#7dd3fc" rx="2"></rect>
+              <rect x="554" y="20" width="6" height="100" fill="#7dd3fc" rx="2"></rect>
+              <!-- M-line -->
+              <rect x="298" y="30" width="4" height="80" fill="#fca5a5" rx="2"></rect>
+              <!-- Myosin (thick) -->
+              <rect x="180" y="48" width="240" height="44" fill="#f59e0b" rx="10"></rect>
+              <!-- Actin (thin) left -->
+              <rect x="46" y="62" width="134" height="16" fill="#60a5fa" rx="8"></rect>
+              <!-- Actin right -->
+              <rect x="420" y="62" width="134" height="16" fill="#60a5fa" rx="8"></rect>
+              <!-- Labels -->
+              <text x="46" y="18" fill="currentColor" font-size="12">Z</text>
+              <text x="556" y="18" fill="currentColor" font-size="12">Z</text>
+              <text x="300" y="26" fill="currentColor" font-size="12" text-anchor="middle">M</text>
+            </svg>
+            <p>전위가 전달되면 칼슘이 방출되고, <strong>미오신 머리</strong>가 <strong>액틴</strong>에 결합하여 파워스트로크를 만든다(미끄럼설). 사코메어 길이가 짧아지면서 전체 근섬유가 수축한다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="types" aria-labelledby="t-types">
+      <h2 id="t-types">근섬유 유형</h2>
+      <div class="type-cards" role="list">
+        <article class="type" role="listitem" aria-labelledby="type1">
+          <h3 id="type1">Type I (지근, 느린 연축)</h3>
+          <p><span class="chip">높은 미토콘드리아</span><span class="chip">지구력</span><span class="chip">지방 산화</span></p>
+          <p>산화 능력이 높고 피로에 강하다. 긴 시간 낮은 강도의 활동(마라톤, 장시간 하이킹)에 유리하다.</p>
+        </article>
+        <article class="type" role="listitem" aria-labelledby="type2a">
+          <h3 id="type2a">Type IIa (속근, 중간 연축)</h3>
+          <p><span class="chip">혼합 대사</span><span class="chip">중등-고강도</span><span class="chip">적응 유연성</span></p>
+          <p>산화·해당 능력을 모두 활용해 비교적 오래 높은 출력을 유지한다. 스포츠 전반에서 성능의 중추.</p>
+        </article>
+        <article class="type" role="listitem" aria-labelledby="type2x">
+          <h3 id="type2x">Type IIx (속근, 빠른 연축)</h3>
+          <p><span class="chip">폭발적 파워</span><span class="chip">ATP-PCr</span><span class="chip">빠른 피로</span></p>
+          <p>최고 출력과 빠른 수축 속도를 보이나 피로가 빠르다. 스프린트·점프·역도 같은 짧고 강한 동작에 특화.</p>
+        </article>
+      </div>
+
+      <div class="explorer" aria-labelledby="t-explorer">
+        <h3 id="t-explorer">유형 탐색기</h3>
+        <p class="muted">슬라이더로 지근 비율을 조정하면, 속근 비율과 함께 예상 퍼포먼스 안내가 갱신된다.</p>
+        <label for="slowPct">지근(Type I) 비율: <strong id="slowLabel">50%</strong></label>
+        <input id="slowPct" class="range" type="range" min="0" max="100" value="50" step="1" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-label="지근 비율" />
+        <div class="bars">
+          <div class="bar slow" aria-label="지근 비율">
+            <div id="barSlow" class="fill" style="width:50%"></div>
+          </div>
+          <div class="bar fast" aria-label="속근 비율">
+            <div id="barFast" class="fill" style="width:50%"></div>
+          </div>
+        </div>
+        <div id="advice" class="pill" aria-live="polite">균형형: 지구력과 파워가 균형을 이룸.</div>
+      </div>
+    </section>
+
+    <section id="energy" aria-labelledby="t-energy">
+      <h2 id="t-energy">에너지 시스템 요약</h2>
+      <div class="timeline">
+        <div>
+          <p><span class="pill">ATP-PCr (0–10초)</span> <br />폭발적 동작에 즉각적 에너지 제공. 크레아틴인산 고갈 시 급격히 감소.</p>
+          <p><span class="pill">무산소 해당계 (10초–2분)</span> <br />중간 지속 고강도. 젖산 축적으로 피로.</p>
+          <p><span class="pill">산화계 (2분 이상)</span> <br />지속적 저·중강도. 지방·탄수화물 산화, 미토콘드리아 의존.</p>
+        </div>
+        <div>
+          <p><strong>실전 연결</strong></p>
+          <ul>
+            <li>스프린트/점프: Type IIx + ATP-PCr</li>
+            <li>400m·중거리: Type IIa + 해당계</li>
+            <li>마라톤/등산: Type I + 산화계</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="training" aria-labelledby="t-training">
+      <h2 id="t-training">훈련에 따른 적응</h2>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>지구력 중심</h3>
+          <ul>
+            <li>미토콘드리아 밀도·모세혈관 수 증가</li>
+            <li>지방 산화 효율 향상, 젖산 역치 상향</li>
+            <li>Type IIa의 산화적 성향 강화</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>파워/스프린트 중심</h3>
+          <ul>
+            <li>신경동원·발화 동기화 개선</li>
+            <li>근섬유 횡단면적(특히 속근) 증가</li>
+            <li>ATP-PCr 저장량·해당계 효소 활성 증가</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="compare" aria-labelledby="t-compare">
+      <h2 id="t-compare">빠른 비교</h2>
+      <div class="table" role="region" aria-label="유형 비교 표">
+        <table>
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th>Type I</th>
+              <th>Type IIa</th>
+              <th>Type IIx</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>수축 속도</td><td>느림</td><td>빠름</td><td>매우 빠름</td></tr>
+            <tr><td>피로 저항</td><td>높음</td><td>중간</td><td>낮음</td></tr>
+            <tr><td>주 에너지원</td><td>산화</td><td>혼합</td><td>ATP-PCr/해당</td></tr>
+            <tr><td>활용 예</td><td>마라톤</td><td>구기·전반</td><td>스프린트·점프</td></tr>
+            <tr><td>미토콘드리아</td><td>많음</td><td>중간</td><td>적음</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="glossary" aria-labelledby="t-glossary">
+      <h2 id="t-glossary">용어 사전</h2>
+      <div class="search">
+        <input id="q" class="input" type="search" placeholder="예: 사코메어, 모터유닛, 젖산 역치" aria-label="용어 검색" />
+        <button id="clearQ" class="btn" aria-label="검색 지우기">지우기</button>
+      </div>
+      <div class="glossary" id="glossaryList"></div>
+    </section>
+
+    <section id="quiz" aria-labelledby="t-quiz">
+      <h2 id="t-quiz">3분 퀴즈</h2>
+      <div class="quiz" id="quizBox" aria-live="polite"></div>
+      <div class="actions">
+        <button id="nextQ" class="btn btn-primary">다음 문제</button>
+        <button id="resetQ" class="btn">처음부터</button>
+      </div>
+    </section>
+
+    <section id="refs" aria-labelledby="t-refs">
+      <h2 id="t-refs">참고 및 고지</h2>
+      <ul>
+        <li>이 페이지는 교육용 요약이다. 의료적 판단이나 진단을 대체하지 않는다.</li>
+        <li>콘텐츠는 대표적인 운동생리학 지식을 바탕으로 작성되었다.</li>
+        <li>다크/라이트, 대비, 모션은 사용자 설정을 존중한다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <button class="btn to-top" id="toTop" aria-label="맨 위로 이동">▲ 맨 위</button>
+
+  <footer class="wrap">© <span id="year"></span> 근섬유 아틀라스</footer>
+
+  <script>
+    // Utilities
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+
+    // Progress bar, ScrollSpy, Back-to-top
+    const progressEl = $('#progress');
+    const toTop = $('#toTop');
+    const navLinks = $$('nav a');
+
+    function onScroll() {
+      const h = document.documentElement;
+      const st = h.scrollTop;
+      const sh = h.scrollHeight - h.clientHeight;
+      const pct = (st / sh) * 100;
+      progressEl.style.width = pct + '%';
+      toTop.classList.toggle('show', st > 300);
+
+      // ScrollSpy
+      const sections = ['intro','structure','types','energy','training','compare','glossary','quiz','refs'];
+      let active = 'intro';
+      for (const id of sections) {
+        const top = document.getElementById(id).getBoundingClientRect().top;
+        if (top <= 120) active = id;
+      }
+      for (const a of navLinks) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+      }
+    }
+    document.addEventListener('scroll', onScroll, { passive: true });
+
+    // Smooth anchors
+    navLinks.forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const id = a.getAttribute('href').slice(1);
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', '#' + id);
+      })
+    });
+
+    // Back to top
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Theme toggle
+    const themeBtn = $('#themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+    function updateThemeLabel() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || (!document.documentElement.hasAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+      themeBtn.textContent = isDark ? '🌙' : '☀️';
+      themeBtn.setAttribute('aria-pressed', String(isDark));
+    }
+    updateThemeLabel();
+    themeBtn.addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeLabel();
+    });
+
+    // Structure stepper
+    const steps = $$('.step');
+    const panels = [$('#panel-0'), $('#panel-1'), $('#panel-2'), $('#panel-3')];
+    steps.forEach((btn, i) => btn.addEventListener('click', () => {
+      steps.forEach(s => { s.classList.remove('active'); s.setAttribute('aria-selected','false'); });
+      panels.forEach(p => p.hidden = true);
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+      panels[i].hidden = false;
+    }));
+
+    // Explorer slider
+    const slow = $('#slowPct');
+    const slowLabel = $('#slowLabel');
+    const barSlow = $('#barSlow');
+    const barFast = $('#barFast');
+    const advice = $('#advice');
+    function updateExplorer(v) {
+      const s = Number(v);
+      const f = 100 - s;
+      slowLabel.textContent = s + '%';
+      slow.setAttribute('aria-valuenow', String(s));
+      barSlow.style.width = s + '%';
+      barFast.style.width = f + '%';
+      let text = '균형형: 지구력과 파워가 균형을 이룸.';
+      if (s >= 70) text = '지구력 우세: 긴 시간 효율적인 퍼포먼스.';
+      else if (s <= 30) text = '파워 우세: 폭발적 출력, 피로 관리가 관건.';
+      advice.textContent = text;
+    }
+    slow.addEventListener('input', e => updateExplorer(e.target.value));
+    updateExplorer(slow.value);
+
+    // Glossary
+    const TERMS = [
+      { t: '사코메어', d: '근수축의 최소 단위. Z선과 Z선 사이에 액틴·미오신이 배열되어 있다.' },
+      { t: '마이오피브릴', d: '사코메어가 직렬로 연결된 단백질 다발. 근섬유 내부를 채운다.' },
+      { t: '사르코레마', d: '근섬유 세포막. 활동전위를 전달한다.' },
+      { t: 'T-세관', d: '막의 함입 구조로, 전기 신호를 근섬유 깊숙이 전달한다.' },
+      { t: '모터 유닛', d: '하나의 운동뉴런과 그가 지배하는 근섬유들의 집합.' },
+      { t: '지근(Type I)', d: '피로 저항이 높고 산화 대사에 유리한 근섬유.' },
+      { t: '속근(Type II)', d: '수축 속도가 빠르고 고출력에 유리하나 피로가 빠름.' },
+      { t: 'ATP-PCr', d: '크레아틴 인산을 이용한 초단시간 에너지 시스템.' },
+      { t: '젖산 역치', d: '젖산 축적이 급격히 증가하기 시작하는 강도 수준.' },
+      { t: '근비대', d: '근섬유 횡단면적 증가. 주로 고강도 저반복 자극에 의해 촉진.' },
+    ];
+    const gList = $('#glossaryList');
+    function renderTerms(q='') {
+      const frag = document.createDocumentFragment();
+      const norm = q.trim().toLowerCase();
+      TERMS.filter(x => !norm || (x.t.toLowerCase().includes(norm) || x.d.toLowerCase().includes(norm)))
+        .forEach(({t,d})=>{
+          const el = document.createElement('div');
+          el.className = 'term';
+          el.innerHTML = `<strong>${t}</strong><p>${d}</p>`;
+          frag.appendChild(el);
+        });
+      gList.innerHTML = '';
+      gList.appendChild(frag);
+    }
+    renderTerms('');
+    $('#q').addEventListener('input', e => renderTerms(e.target.value));
+    $('#clearQ').addEventListener('click', () => { $('#q').value = ''; renderTerms(''); $('#q').focus(); });
+    // Keyboard shortcut for search
+    window.addEventListener('keydown', (e)=>{ if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); $('#q').focus(); } });
+
+    // Quiz
+    const QUIZ = [
+      { q: 'Type I 근섬유의 대표 특성은?', opts: ['폭발적 파워', '높은 미토콘드리아와 피로 저항', '매우 빠른 수축 속도'], a: 1 },
+      { q: '0–10초 구간에서 우세한 에너지 시스템은?', opts: ['ATP-PCr', '무산소 해당', '산화계'], a: 0 },
+      { q: '사코메어의 경계를 이루는 선은?', opts: ['M선', 'Z선', 'H대'], a: 1 },
+      { q: 'Type IIx는 어느 활동에 가장 적합한가?', opts: ['마라톤', '장거리 하이킹', '스프린트/점프'], a: 2 },
+      { q: '지구력 훈련의 전형적 적응은?', opts: ['미토콘드리아 밀도 증가', '신경동원 감소', 'ATP-PCr 저장량 감소'], a: 0 },
+    ];
+    let qi = 0;
+    const box = $('#quizBox');
+    function renderQ() {
+      const cur = QUIZ[qi % QUIZ.length];
+      box.innerHTML = `<div><strong>${qi+1}. ${cur.q}</strong></div>` + cur.opts.map((o,i)=>`<button class='opt' data-i='${i}'>${o}</button>`).join('');
+      $$('.opt', box).forEach(b=> b.addEventListener('click', ()=>{
+        const picked = Number(b.dataset.i);
+        $$('.opt', box).forEach(x=>x.disabled = true);
+        if (picked === cur.a) b.classList.add('correct'); else b.classList.add('wrong');
+      }));
+    }
+    renderQ();
+    $('#nextQ').addEventListener('click', ()=>{ qi++; renderQ(); });
+    $('#resetQ').addEventListener('click', ()=>{ qi = 0; renderQ(); });
+
+    // Year
+    $('#year').textContent = new Date().getFullYear();
+
+    // Init
+    onScroll();
+  </script>
+</body>
+</html>
